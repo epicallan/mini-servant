@@ -1,0 +1,73 @@
+name: mini-servant
+version: '0.0.1'
+synopsis: Mini clone of servant server lib
+description: Mini clone of servant server lib
+author: Lukwago Allan
+maintainer: epicallan.al@gmail.com
+copyright: 2019 Lukwago Allan
+license: MIT
+github: epicallan/mini-servant.git
+tested-with: GHC==8.6.4
+ghc-options:
+- -Wall
+- -Werror
+- -Wincomplete-uni-patterns
+- -Wincomplete-record-updates
+- -Wcompat
+- -Widentities
+- -Wredundant-constraints
+- -fhide-source-paths
+- -Wmissing-export-lists
+- -Wpartial-fields
+dependencies:
+  - universum
+  - base-noprelude >= 4.7 && < 5
+library:
+  source-dirs: src
+  dependencies:
+    - aeson
+    - base-noprelude >= 4.7 && < 5
+    - http-types
+    - bytestring
+    - mtl
+    - warp
+    - wai
+    - wai-extra
+    - aeson
+  exposed-modules:
+  - Servant
+executables:
+  mini-servant:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+     - aeson
+     - mini-servant
+     - warp
+     - wai
+     - wai-extra
+default-extensions:
+  - LambdaCase
+  - DeriveGeneric
+  - FlexibleInstances
+  - FlexibleContexts
+  - ScopedTypeVariables
+  - TypeApplications
+  - TypeOperators
+  - MultiParamTypeClasses
+  - RecordWildCards
+  - TypeApplications
+  - TypeFamilies
+  - OverloadedStrings
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - FunctionalDependencies
+  - ConstraintKinds
+  - RankNTypes
+  - PolyKinds
+  - DataKinds
+  - KindSignatures
