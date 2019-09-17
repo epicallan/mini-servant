@@ -1,21 +1,46 @@
-{-# LANGUAGE InstanceSigs     #-}
-{-# LANGUAGE TypeApplications #-}
-module Servant.API.Alternative ( (:<|>)(..) )   where
 
-import Data.Kind (Type)
-import Data.Proxy (Proxy)
-import Servant.Server (HasServer (..), RouteResult (..), RoutingApplication)
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveFoldable     #-}
+{-# LANGUAGE DeriveFunctor      #-}
+{-# LANGUAGE DeriveTraversable  #-}
 
-infixr 7 :<|>
-data (firstAlt :: Type) :<|> (secondAlt :: Type) = firstAlt :<|> secondAlt
+module Servant.API.Alternative ((:<|>)(..)) where
 
-instance (HasServer firstAlt, HasServer secondAlt) => HasServer (firstAlt :<|> secondAlt) where
+import Data.Bifoldable (Bifoldable (..))
+import Data.Bifunctor (Bifunctor (..))
+import Data.Semigroup (Semigroup (..))
+import Data.Typeable (Typeable)
 
-  type Server (firstAlt :<|> secondAlt) = Server firstAlt :<|> Server secondAlt
 
-  route :: Proxy (firstAlt :<|> secondAlt) -> Server firstAlt :<|> Server secondAlt -> RoutingApplication
-  route _ (firstHandler :<|> secondHandler) request = do
-    result <- route (Proxy @firstAlt) firstHandler request
-    case routeResult result of
-      Right _ -> return result
-      Left _  -> route (Proxy @secondAlt) secondHandler request
+-- | Union of two APIs, first takes precedence in case of overlap.
+--
+-- Example:
+--
+-- >>> :{
+--type MyApi = "books" :> Get '[JSON] [Book] -- GET /books
+--        :<|> "books" :> ReqBody '[JSON] Book :> Post '[JSON] () -- POST /books
+-- :}
+data a :<|> b = a :<|> b
+    deriving (Typeable, Eq, Show, Functor, Traversable, Foldable, Bounded)
+infixr 3 :<|>
+
+instance (Semigroup a, Semigroup b) => Semigroup (a :<|> b) where
+    (a :<|> b) <> (a' :<|> b') = (a <> a') :<|> (b <> b')
+
+instance (Monoid a, Monoid b) => Monoid (a :<|> b) where
+    mempty = mempty :<|> mempty
+    mappend = (<>)
+
+instance Bifoldable (:<|>) where
+-- ^ TODO: read about Bifoldable class
+    bifoldMap f g ~(a :<|> b) = f a `mappend` g b
+
+instance Bifunctor (:<|>) where
+    bimap f g ~(a :<|> b) = f a :<|> g b
+
+-- $setup
+-- >>> import Servant.API
+-- >>> import Data.Aeson
+-- >>> import Data.Text
+-- >>> data Book
+-- >>> instance ToJSON Book where { toJSON = undefined }

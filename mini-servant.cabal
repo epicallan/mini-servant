@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.1.
+-- This file has been generated from package.yaml by hpack version 0.31.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5af20fdbcd75a2c9d6207d1e949691dff506d4a06da564878c4b17638b7c376c
+-- hash: 0c82f96c9633a43e594bb844839c04595f42926254c968ed5f633ee7165f2e46
 
 name:           mini-servant
 version:        0.0.1
@@ -26,26 +26,39 @@ source-repository head
 
 library
   exposed-modules:
+      Prelude
       Servant
   other-modules:
-      Prelude
       Servant.API
       Servant.API.Alternative
       Servant.API.Capture
+      Servant.API.ContentTypes
       Servant.API.Sub
       Servant.API.Verbs
       Servant.Server
+      Servant.Server.Internal
+      Servant.Server.Internal.Delayed
+      Servant.Server.Internal.DelayedIO
+      Servant.Server.Internal.Handler
+      Servant.Server.Internal.Router
+      Servant.Server.Internal.RouteResult
+      Servant.Server.Internal.RoutingApplication
+      Servant.Server.Internal.ServerError
       Paths_mini_servant
   hs-source-dirs:
       src
-  default-extensions: LambdaCase DeriveGeneric FlexibleInstances FlexibleContexts ScopedTypeVariables TypeApplications TypeOperators MultiParamTypeClasses RecordWildCards TypeApplications TypeFamilies OverloadedStrings GADTs GeneralizedNewtypeDeriving FunctionalDependencies ConstraintKinds RankNTypes PolyKinds DataKinds KindSignatures
-  ghc-options: -Wall -Werror -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Widentities -Wredundant-constraints -fhide-source-paths -Wmissing-export-lists -Wpartial-fields
+  default-extensions: LambdaCase DeriveGeneric FlexibleInstances FlexibleContexts ScopedTypeVariables TypeApplications TypeOperators MultiParamTypeClasses RecordWildCards TypeApplications TypeFamilies OverloadedStrings GADTs GeneralizedNewtypeDeriving FunctionalDependencies ConstraintKinds RankNTypes PolyKinds DataKinds KindSignatures InstanceSigs
+  ghc-options: -Wall -Werror -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Widentities -Wredundant-constraints -fhide-source-paths -Wpartial-fields
   build-depends:
       aeson
     , base-noprelude >=4.7 && <5
     , bytestring
+    , containers
+    , exceptions
+    , http-api-data
     , http-types
     , mtl
+    , string-conversions
     , universum
     , wai
     , wai-extra
@@ -55,12 +68,11 @@ library
 executable mini-servant
   main-is: Main.hs
   other-modules:
-      Prelude
       Paths_mini_servant
   hs-source-dirs:
       app
-  default-extensions: LambdaCase DeriveGeneric FlexibleInstances FlexibleContexts ScopedTypeVariables TypeApplications TypeOperators MultiParamTypeClasses RecordWildCards TypeApplications TypeFamilies OverloadedStrings GADTs GeneralizedNewtypeDeriving FunctionalDependencies ConstraintKinds RankNTypes PolyKinds DataKinds KindSignatures
-  ghc-options: -Wall -Werror -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Widentities -Wredundant-constraints -fhide-source-paths -Wmissing-export-lists -Wpartial-fields -threaded -rtsopts -with-rtsopts=-N
+  default-extensions: LambdaCase DeriveGeneric FlexibleInstances FlexibleContexts ScopedTypeVariables TypeApplications TypeOperators MultiParamTypeClasses RecordWildCards TypeApplications TypeFamilies OverloadedStrings GADTs GeneralizedNewtypeDeriving FunctionalDependencies ConstraintKinds RankNTypes PolyKinds DataKinds KindSignatures InstanceSigs
+  ghc-options: -Wall -Werror -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Widentities -Wredundant-constraints -fhide-source-paths -Wpartial-fields -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base-noprelude >=4.7 && <5

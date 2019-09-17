@@ -17,7 +17,6 @@ ghc-options:
 - -Widentities
 - -Wredundant-constraints
 - -fhide-source-paths
-- -Wmissing-export-lists
 - -Wpartial-fields
 dependencies:
   - universum
@@ -27,14 +26,19 @@ library:
   dependencies:
     - aeson
     - base-noprelude >= 4.7 && < 5
+    - containers
+    - http-api-data
     - http-types
+    - exceptions
     - bytestring
     - mtl
+    - string-conversions
     - warp
     - wai
     - wai-extra
     - aeson
   exposed-modules:
+  - Prelude
   - Servant
 executables:
   mini-servant:
@@ -71,3 +75,4 @@ default-extensions:
   - PolyKinds
   - DataKinds
   - KindSignatures
+  - InstanceSigs
